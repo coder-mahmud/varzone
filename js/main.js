@@ -1,5 +1,7 @@
 ( function( $ ) {
 $( document ).ready(function() {
+
+  
   $('.cssmenu > ul > li > a').click(function() {
       $('.cssmenu li').removeClass('active');
       $(this).closest('li').addClass('active');	
@@ -18,5 +20,27 @@ $( document ).ready(function() {
         return false;	
       }		
   });
+
+  $('#filter').submit(function(){
+      var filter = $('#filter');
+      $.ajax({
+          url:filter.attr('action'),
+          data:filter.serialize(), // form data
+          type:filter.attr('method'), // POST
+          beforeSend:function(xhr){
+              filter.find('button').text('Processing...'); // changing the button label
+          },
+          success:function(data){
+              filter.find('button').text('Apply filter'); // changing the button label back
+              $('#response').html(data); // insert data
+          }
+      });
+      return false;
+  });
+
+
+
+
+
   });
 } )( jQuery );

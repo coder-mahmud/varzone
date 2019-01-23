@@ -24,24 +24,40 @@ get_header();
 				</div>
 			</header>
 
-			<?php
-				$term_names = array();
-				$terms = get_terms( 'school-state', array(
-					'hide_empty' => false,
-				));
-				//print_r($terms);
-				foreach($terms as $term){
-					$term_names[] = $term -> name;
-				}
-				print_r($term_names);
-			?>
-			<h2>Term Test</h2>
-			<?php
-				//print_r( get_term_link(161));
+<form action="<?php echo site_url() ?>/wp-admin/admin-ajax.php" method="POST" id="filter">
 
-			?>
-			<a href="<?php echo get_term_link(2379); ?>">Go to!</a>			
+        <div>
+                <?php  
+                      if( $brands = get_terms( array( 'taxonomy' => 'school-division' ) ) ) :
+                            echo '<ul class="brands-list division-list">';
+                        foreach( $brands as $brand ) :
+                            echo '<input type="checkbox" class="" id="brand_' . $brand->term_id . '" name="brand_' . $brand->term_id . '" /><label for="brand_' . $brand->term_id . '">' . $brand->name . '</label>';
+                            if ($brand !== end($brands)) { echo '<li class="list-spacer">/</li>'; }
+                        endforeach;
+                            echo '</ul>';
+                    endif;
+                ?>
+            </div>
 
+            <div>
+                <?php  
+                      if( $sizes = get_terms( array( 'taxonomy' => 'school-conference' ) ) ) :
+                            echo '<ul class="sizes-list conference-list">';
+                        foreach( $sizes as $size ) :
+                            echo '<input type="checkbox" class="" id="size_' . $size->term_id . '" name="size_' . $size->term_id . '" /><label for="size_' . $size->term_id . '">' . $size->name . '</label>';
+                            if ($size !== end($sizes)) { echo '<li class="list-spacer">/</li>'; }
+                        endforeach;
+                            echo '</ul>';
+                    endif;
+
+                ?>
+            </div>
+        <button class="btn btn-primary">Filter</button>
+        <input type="hidden" name="action" value="myfilter">
+        </form>	
+		
+
+		<div id="response">Result will be showed here...</div>
 		</div><!-- #content -->
 	</div><!-- #primary -->
 
