@@ -1,0 +1,1 @@
+Single page template for school post type.
