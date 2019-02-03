@@ -28,26 +28,30 @@ get_header();
 
         <div>
                 <?php  
-                      if( $brands = get_terms( array( 'taxonomy' => 'school-division' ) ) ) :
-                            echo '<ul class="brands-list division-list">';
-                        foreach( $brands as $brand ) :
-                            echo '<input type="checkbox" class="" id="brand_' . $brand->term_id . '" name="brand_' . $brand->term_id . '" /><label for="brand_' . $brand->term_id . '">' . $brand->name . '</label>';
-                            if ($brand !== end($brands)) { echo '<li class="list-spacer">/</li>'; }
+                      if( $divisions = get_terms( array( 'taxonomy' => 'school-division' ) ) ) :
+                            echo '<select name="division_id" id="">';
+                            echo '<option value="select One">Select One</option>';
+                        foreach( $divisions as $division ) :
+
+                               echo  '<option value="'. $division->term_id . '">'.$division->name.'</option>';
+
                         endforeach;
-                            echo '</ul>';
+                            //echo '</ul>';
+                            echo '</select>';
                     endif;
                 ?>
             </div>
 
             <div>
                 <?php  
-                      if( $sizes = get_terms( array( 'taxonomy' => 'school-conference' ) ) ) :
-                            echo '<ul class="sizes-list conference-list">';
-                        foreach( $sizes as $size ) :
-                            echo '<input type="checkbox" class="" id="size_' . $size->term_id . '" name="size_' . $size->term_id . '" /><label for="size_' . $size->term_id . '">' . $size->name . '</label>';
-                            if ($size !== end($sizes)) { echo '<li class="list-spacer">/</li>'; }
+                      if( $confs = get_terms( array( 'taxonomy' => 'school-conference' ) ) ) :
+                            echo '<select name="conference_id">';
+                            echo '<option value="select One">Select One</option>';
+                        foreach( $confs as $conf ) :
+                             echo  '<option value="'. $conf->term_id . '">'.$conf->name.'</option>';
+
                         endforeach;
-                            echo '</ul>';
+                            echo '</select>';
                     endif;
 
                 ?>
@@ -56,6 +60,11 @@ get_header();
         <input type="hidden" name="action" value="myfilter">
         </form>	
 		
+        
+
+
+        
+
 
 		<div id="response">Result will be showed here...</div>
 		</div><!-- #content -->

@@ -19,71 +19,303 @@ add_action( 'after_setup_theme', 'bimber_child_setup' );
 
 
 
-
-
-
 function cwp_filter_function(){   
 
-//brands checkboxes
-if( $brands = get_terms( array( 'taxonomy' => 'school-division' ) ) ) :
-$brands_terms = array();
+//Divisions checkboxes
+if( $divisions = get_terms( array( 'taxonomy' => 'school-division' ) ) ) :
+$division_terms = array();
 
-foreach( $brands as $brand ) {
-    if( isset( $_POST['brand_' . $brand->term_id ] ) && $_POST['brand_' . $brand->term_id] == 'on' )
-         $brands_terms[] = $brand->slug;
+foreach( $divisions as $division ) {
+    if(  $_POST['division_id'] == $division->term_id)
+        $division_terms[] = $division->slug;
 }
 endif;
 
-//sizes checkboxes
-if( $sizes = get_terms( array( 'taxonomy' => 'school-conference' ) ) ) :
-$sizes_terms = array();
+//Conferences checkboxes
+if( $confs = get_terms( array( 'taxonomy' => 'school-conference' ) ) ) :
+$conf_terms = array();
 
-foreach( $sizes as $size ) {
-    if( isset( $_POST['size_' . $size->term_id ] ) && $_POST['size_' . $size->term_id] == 'on' )
-         $sizes_terms[] = $size->slug;
+foreach( $confs as $conf ) {
+    if( $_POST['conference_id'] == $conf->term_id )
+        $conf_terms[] = $conf->slug;
+}
+endif;
+
+$state_terms = array();
+//States checkboxes
+if( $states = get_terms( array( 'taxonomy' => 'school-state' ) ) ) :
+
+
+foreach( $states as $state ) {
+    if( $_POST['state_id'] == $state->term_id )
+        $state_terms[] = $state->slug;
+
+}
+endif;
+
+//Sports checkboxes
+if( $sports = get_terms( array( 'taxonomy' => 'school-sports' ) ) ) :
+$sport_terms = array();
+
+foreach( $sports as $sport ) {
+    if( $_POST['sport_id'] == $sport->term_id )
+        $sport_terms[] = $sport->slug;
 }
 endif;
 
 
-$brand_data='';
-if(!empty($brands_terms)){
-	$brand_data['taxonomy'] = 'school-division';
-	$brand_data['field'] = 'slug';
-	$brand_data['terms'] =$brands_terms;
+$division_data='';
+if(!empty($division_terms)){
+    $division_data['taxonomy'] = 'school-division';
+    $division_data['field'] = 'slug';
+    $division_data['terms'] =$division_terms;
 }
 
-$sizes_data='';
-if(!empty($sizes_terms)){
-	
-	$sizes_data['taxonomy'] = 'school-conference';
-	$sizes_data['field'] = 'slug';
-	$sizes_data['terms'] =$sizes_terms;
+$conf_data='';
+if(!empty($conf_terms)){
+    
+    $conf_data['taxonomy'] = 'school-conference';
+    $conf_data['field'] = 'slug';
+    $conf_data['terms'] =$conf_terms;
 }
+
+$state_data='';
+if(!empty($state_terms)){
+    
+    $state_data['taxonomy'] = 'school-state';
+    $state_data['field'] = 'slug';
+    $state_data['terms'] =$state_terms;
+}
+
+$sport_data='';
+if(!empty($sport_terms)){
+    
+    $sport_data['taxonomy'] = 'school-sports';
+    $sport_data['field'] = 'slug';
+    $sport_data['terms'] =$sport_terms;
+}
+
+
+
+$paged = $_POST['page'] ? $_POST['page'] : 1;
 
 $args = array(
     'orderby' => 'date',
     'post_type' => 'schools',
-    'posts_per_page' => -1,
+    'posts_per_page' => 1,
+    'paged' => $paged,
+
     'tax_query' => array(
         'relation' => 'AND',
+
         array(
-        	$brand_data
-            // 'taxonomy' => 'school-division',
-            // 'field' => 'slug',
-            // 'terms' => $brands_terms
+            $state_data
+        ),        
+        array(
+            $division_data
         ),
         
         array(
-        	$sizes_data
-
-	        //     'taxonomy' => 'school-conference',
-	        //     'field' => 'slug',
-	        //     'terms' =>$sizes_terms
+            $conf_data
+        ),
+        array(
+            $sport_data
         )
 
         
     )
 );
+
+//print_r( $_POST);
+//$data = $_POST;
+ //print_r($division_data);
+//echo $_POST['division_id'];
+
+$query = new WP_Query($args);
+
+if( $query->have_posts() ) :
+    while( $query->have_posts() ): $query->the_post();
+        echo '<h2>' . $query->post->post_title . '</h2>';
+    endwhile;
+
+
+
+    $total_pages = $query->max_num_pages;
+
+
+    if ($total_pages > 1){
+
+        $current_page = max(1, get_query_var('paged'));
+
+        echo $link_primary =  paginate_links(array(
+            'base' => get_pagenum_link(1) . '%_%',
+            'format' => '/page/%#%',
+            'current' => $current_page,
+            'total' => $total_pages,
+            'prev_text'    => __('« prev'),
+            'next_text'    => __('next »'),
+            //'add_args' => array( 'project' => 1),
+        ));
+
+
+        //echo $total_pages;
+
+        echo "<div class='data_div'>";
+        echo "<div class='division_id'>".$_POST['division_id']."</div>";
+        echo "<div class='conference_id'>".$_POST['conference_id']."</div>";
+        echo "<div class='state_id'>".$_POST['state_id']."</div>";
+        echo "<div class='sport_id'>".$_POST['sport_id']."</div>";
+        echo "<div class='total_page'>".$total_pages."</div>";
+        echo "</div>";
+
+
+
+        // $links = $link_primary;
+
+        // $links = str_replace('<a ', '<a data-sport='.$sport_data , $links);
+        // echo $links;
+    }
+    
+    // 
+    wp_reset_postdata();
+    // echo "hola";
+    // print_r($division_terms);
+    //echo "<div class='division'>".$division_terms[0]."</div>";
+
+
+else :
+    echo 'No School found with this search fields. Please try again.';
+endif;
+
+die();
+
+
+}
+
+
+
+
+
+
+
+
+
+add_action('wp_ajax_myfilter', 'cwp_filter_function'); 
+add_action('wp_ajax_nopriv_myfilter', 'cwp_filter_function');
+
+add_action('wp_ajax_myfilter_new', 'cwp_filter_function_new'); 
+add_action('wp_ajax_nopriv_myfilter_new', 'cwp_filter_function_new');
+
+
+
+function cwp_filter_function_new(){   
+
+//Divisions checkboxes
+if( $divisions = get_terms( array( 'taxonomy' => 'school-division' ) ) ) :
+$division_terms = array();
+
+foreach( $divisions as $division ) {
+    if(  $_POST['division_id'] == $division->term_id)
+        $division_terms[] = $division->slug;
+}
+endif;
+
+//Conferences checkboxes
+if( $confs = get_terms( array( 'taxonomy' => 'school-conference' ) ) ) :
+$conf_terms = array();
+
+foreach( $confs as $conf ) {
+    if( $_POST['conference_id'] == $conf->term_id )
+        $conf_terms[] = $conf->slug;
+}
+endif;
+
+$state_terms = array();
+//States checkboxes
+if( $states = get_terms( array( 'taxonomy' => 'school-state' ) ) ) :
+
+
+foreach( $states as $state ) {
+    if( $_POST['state_id'] == $state->term_id )
+        $state_terms[] = $state->slug;
+
+}
+endif;
+
+//Sports checkboxes
+if( $sports = get_terms( array( 'taxonomy' => 'school-sports' ) ) ) :
+$sport_terms = array();
+
+foreach( $sports as $sport ) {
+    if( $_POST['sport_id'] == $sport->term_id )
+        $sport_terms[] = $sport->slug;
+}
+endif;
+
+
+$division_data='';
+if(!empty($division_terms)){
+    $division_data['taxonomy'] = 'school-division';
+    $division_data['field'] = 'slug';
+    $division_data['terms'] =$division_terms;
+}
+
+$conf_data='';
+if(!empty($conf_terms)){
+    
+    $conf_data['taxonomy'] = 'school-conference';
+    $conf_data['field'] = 'slug';
+    $conf_data['terms'] =$conf_terms;
+}
+
+$state_data='';
+if(!empty($state_terms)){
+    
+    $state_data['taxonomy'] = 'school-state';
+    $state_data['field'] = 'slug';
+    $state_data['terms'] =$state_terms;
+}
+
+$sport_data='';
+if(!empty($sport_terms)){
+    
+    $sport_data['taxonomy'] = 'school-sports';
+    $sport_data['field'] = 'slug';
+    $sport_data['terms'] =$sport_terms;
+}
+
+
+$paged = $_POST['page'];
+
+$args = array(
+    'orderby' => 'date',
+    'post_type' => 'schools',
+    'posts_per_page' => 1,
+    'paged' => $paged,
+
+    'tax_query' => array(
+        'relation' => 'AND',
+
+        array(
+            $state_data
+        ),        
+        array(
+            $division_data
+        ),
+        
+        array(
+            $conf_data
+        ),
+        array(
+            $sport_data
+        )
+
+        
+    )
+);
+
+
+
 
 $query = new WP_Query( $args );
 
@@ -91,13 +323,49 @@ if( $query->have_posts() ) :
     while( $query->have_posts() ): $query->the_post();
         echo '<h2>' . $query->post->post_title . '</h2>';
     endwhile;
+
+
+
+    $total_pages = $query->max_num_pages;
+
+    if ($total_pages > 1){
+
+        $current_page = max(1, get_query_var('paged'));
+
+        echo $link_primary =  paginate_links(array(
+            'base' => get_pagenum_link(1) . '%_%',
+            'format' => '/page/%#%',
+            'current' => $current_page,
+            'total' => $total_pages,
+            'prev_text'    => __('« prev'),
+            'next_text'    => __('next »'),
+            'add_args' => array( 'project' => 1),
+        ));
+
+        // $links = $link_primary;
+
+        // $links = str_replace('<a ', '<a data-sport='.$sport_data , $links);
+        // echo $links;
+    }
+
+    // 
     wp_reset_postdata();
+    // echo "hola";
+    // print_r($division_terms);
+    echo "<div class='data_div'>";
+    echo "<div class='division_id'>".$_POST['division_id']."</div>";
+    echo "<div class='conf_id'>".$_POST['conference_id']."</div>";
+    echo "<div class='state_id'>".$_POST['state_id']."</div>";
+    echo "<div class='sport_id'>".$_POST['sport_id']."</div>";
+    echo "<div class='total_page'>".$total_pages."</div>";
+    echo "</div>";
+
+
 else :
-    echo 'No posts found';
+    echo 'No School found with this search fields. Please try again.';
 endif;
+//print_r($_POST);
 die();
+
+
 }
-
-
-add_action('wp_ajax_myfilter', 'cwp_filter_function'); 
-add_action('wp_ajax_nopriv_myfilter', 'cwp_filter_function');

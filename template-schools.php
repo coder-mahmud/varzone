@@ -12,131 +12,118 @@ get_header();
 ?>
 
 
-
-	<div id="primary" class="g1-column g1-column-2of3">
-		<div id="content" role="main kk ">
-
-			<header class="g1-row archive-header">
-				<div class="g1-row-inner">
-
-					<h1 class="g1-alpha g1-alpha-2nd archive-title">Schools</h1>
-
-				</div>
-			</header>
+	<div class="search_holder">
+	<div id="primary" class="g1-column g1-column-2of3 school_filter_page">
+		<div id="content" role="main">
 
 			<div class="custom_row">
-				<div class="column column-8">
-					
-		            <?php
-		               $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-		               $args = array('post_type' => 'schools', 'posts_per_page' => -1,/*'paged' => $paged*/);
-		               $category_posts = new WP_Query($args);
-		               if($category_posts->have_posts()) : while($category_posts->have_posts()) : $category_posts->the_post();
-		            ?>
-
-		                <h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
-
-		            <?php endwhile; endif; ?>
-		            <?php //echo kriesi_pagination();?>
-		            <?php wp_reset_query();  ?>
-
-				</div>
-
 
 				<div class="column column-4">
+					<form action="<?php echo site_url() ?>/wp-admin/admin-ajax.php" method="POST" id="filter" class="scholl_filter">
+
+			            <div  class="single_filter">
+			            	<span class="select_name">Conference Center</span>
+			                <?php  
+			                      if( $confs = get_terms( array( 'taxonomy' => 'school-conference' ) ) ) :
+			                            echo '<select name="conference_id" class="form_selector"> ';
+			                            echo '<option value="select">No Preference</option>';
+			                        foreach( $confs as $conf ) :
+			                             echo  '<option value="'. $conf->term_id . '">'.$conf->name.'</option>';
+
+			                        endforeach;
+			                            echo '</select>';
+			                    endif;
+
+			                ?>
+			            </div>
+
+			            <div class="single_filter">
+			            	<span class="select_name">State</span>
+			                <?php  
+			                      if( $states = get_terms( array( 'taxonomy' => 'school-state' ) ) ) :
+			                            echo '<select name="state_id" class="form_selector">';
+			                            echo '<option value="select">No Preference</option>';
+			                        foreach( $states as $state ) :
+			                             echo  '<option value="'. $state->term_id . '">'.$state->name.'</option>';
+
+			                        endforeach;
+			                            echo '</select>';
+			                    endif;
+
+			                ?>
+			            </div>
 
 
-<div class="cssmenu">
-	<ul>
+			            <div class="single_filter">
+			            	<span class="select_name">Sport</span>
+			                <?php  
+			                      if( $sports = get_terms( array( 'taxonomy' => 'school-sports' ) ) ) :
+			                            echo '<select name="sport_id" class="form_selector">';
+			                            echo '<option value="select">No Preference</option>';
+			                        foreach( $sports as $sport ) :
+			                             echo  '<option value="'. $sport->term_id . '">'.$sport->name.'</option>';
+			                        endforeach;
+			                            echo '</select>';
+			                    endif;
+
+			                ?>
+			            </div>
 
 
-	<li class='has-sub'><a href='#'><span>States</span></a>
-		<ul>
-			<?php
-				$state_terms = array();
-				$states = get_terms( 'school-state', array(
-					'hide_empty' => false,
-				));
-				//print_r($states);
-				
-				foreach($states as $state){
-					//$state_terms[] = $state -> name;
-					$state_id = $state->term_taxonomy_id; ?>
-					<li><a href="<?php echo get_term_link($state_id); ?>"><?php echo $state->name; ?></a></li>
 
-				<?php }
-				//print_r($term_names);
-			?>
-		</ul>
-	</li>
+				        <div class="single_filter">
+				        	<span class="select_name">Division</span>
+				                <?php  
+				                      if( $divisions = get_terms( array( 'taxonomy' => 'school-division' ) ) ) :
+				                            echo '<select name="division_id" id="" class="form_selector">';
+				                            echo '<option value="select">No Preference</option>';
+				                        foreach( $divisions as $division ) :
 
-	<li class='has-sub'><a href='#'><span>Division</span></a>
-		<ul>
-			<?php
-				$states = get_terms( 'school-division', array(
-					'hide_empty' => false,
-				));
-				
-				foreach($states as $state){
-					$state_id = $state->term_taxonomy_id; ?>
-					<li><a href="<?php echo get_term_link($state_id); ?>"><?php echo $state->name; ?></a></li>
-				<?php }
-			?>
-		</ul>
-	</li>
+				                               echo  '<option value="'. $division->term_id . '">'.$division->name.'</option>';
 
-	<li class='has-sub'><a href='#'><span>Conference Center</span></a>
-		<ul>
-			<?php
-				$state_terms = array();
-				$states = get_terms( 'school-conference', array(
-					'hide_empty' => false,
-				));
-				
-				foreach($states as $state){
-					//$state_terms[] = $state -> name;
-					$state_id = $state->term_taxonomy_id; ?>
-					<li><a href="<?php echo get_term_link($state_id); ?>"><?php echo $state->name; ?></a></li>
+				                        endforeach;
+				                            //echo '</ul>';
+				                            echo '</select>';
+				                    endif;
+				                ?>
+				        </div>
 
-				<?php }
-				//print_r($term_names);
-			?>
-		</ul>
-	</li>
+				        <div  class="single_filter">
+							<button class="btn btn-primary">Search Schools</button>
+				        </div>
 
-	<li class='has-sub'><a href='#'><span>Sports</span></a>
-		<ul>
-			<?php
-				$state_terms = array();
-				$sports = get_terms( 'school-sports', array(
-					'hide_empty' => false,
-				));
-				//print_r($states);
-				
-				foreach($sports as $sport){
-					//$state_terms[] = $state -> name;
-					$sport_id = $sport->term_taxonomy_id; ?>
-					<li><a href="<?php echo get_term_link($sport_id); ?>"><?php echo $sport->name; ?></a></li>
+				        
+<!-- <input type="hidden" name="action" value="demo-pagination-load-posts">	 -->			        
+				        <input type="hidden" name="action" value="myfilter">
+				        <input type="hidden" name="page" value="1">
+				    </form>
 
-				<?php }
-				//print_r($term_names);
-			?>
-		</ul>
-	</li>
+				</div><!-- End column-4 -->
+
+				<div class="column column-8 result_div">
+					<header class="g1-row archive-header">
+						<div class="g1-row-inner">
+
+							<h1 class="g1-alpha g1-alpha-2nd archive-title"><?php the_title(); ?></h1>
+							<hr>
+
+						</div>
+					</header>
 
 
-</ul>
-</div>
-</div>
 
+					<div id="response">
+						<?php if(have_posts()):
+							while(have_posts()) : the_post();?>
+						<?php the_content(); ?>
+						<?php endwhile; endif; ?>
 
-			</div>
+					</div>
+				</div><!-- End column-8 -->
+
+			</div><!-- End row -->
 
 		</div><!-- #content -->
 	</div><!-- #primary -->
-
-
-
-
-
+	</div>
 <?php get_footer();?>
