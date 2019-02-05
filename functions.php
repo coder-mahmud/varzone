@@ -10,7 +10,9 @@ if ( !defined( 'ABSPATH' ) )
 * This way theme updates will be a lot easier.
 */
 function bimber_child_setup() {
-	wp_enqueue_style('child_style', get_stylesheet_directory_uri(). '/css/styles.css');
+    wp_enqueue_style('child_style', get_stylesheet_directory_uri(). '/css/styles.css');
+	wp_enqueue_style('auto_complete_style', get_stylesheet_directory_uri(). '/css/jquery.auto-complete.css');
+    wp_enqueue_script('auto_complete_script', get_stylesheet_directory_uri().'/js/jquery.auto-complete.js', array('jquery'), '', true );
 	wp_enqueue_script('child_main_script', get_stylesheet_directory_uri().'/js/main.js', array('jquery'), '', true );
 }
 
@@ -135,7 +137,7 @@ $args = array(
 
 );
 
-print_r( $_POST);
+//print_r( $_POST);
 //$data = $_POST;
  //print_r($division_data);
 //echo $_POST['division_id'];
@@ -392,6 +394,47 @@ else :
 endif;
 //print_r($_POST);
 die();
+
+
+}
+
+
+
+
+add_action('wp_ajax_autofill', 'cwp_auto_fill_callback'); 
+add_action('wp_ajax_nopriv_autofill', 'cwp_auto_fill_callback');
+
+
+function cwp_auto_fill_callback(){
+    $city = $_POST['city'];
+    $citis = array();
+    $args = array(
+        'orderby' => 'date',
+        'post_type' => 'schools',
+        'posts_per_page' => -1,
+        'meta_query' => array(
+            array(
+                'key'     => 'city',
+                'value'   => $city,
+                'compare' => 'LIKE',
+            ),
+        ),
+    );
+
+    $query = new WP_Query($args);
+
+    if($query -> have_posts()): while($query -> have_posts()):
+        $query -> the_post();
+        $city_name = get_field('city');
+       $citis[] = $city_name;
+
+    endwhile; endif;
+    echo json_encode($citis);
+ 
+    die();
+
+
+
 
 
 }

@@ -89,7 +89,7 @@ get_header();
 				        </div>
 
 				        <div  class="single_filter">
-							<input type="text" name="city_id" placeholder="Write your city" class="city">
+							<input id="city_name" type="text" name="city_id" placeholder="Write your city" class="city">
 				        </div>
 				        <div  class="single_filter">
 							<button class="btn btn-primary">Search Schools</button>
@@ -124,7 +124,33 @@ get_header();
 					</div>
 
 					<div class="test_div">
+<!-- 					<?php
 
+					$args = array(
+					    'orderby' => 'date',
+					    'post_type' => 'schools',
+					    'posts_per_page' => -1,
+					    'meta_query' => array(
+					        array(
+					            'key'     => 'city',
+					            'value'   => 'dha',
+					            'compare' => 'LIKE',
+					        ),
+					    ),
+					);
+
+					$query = new WP_Query($args);
+
+					if($query -> have_posts()): while($query -> have_posts()):
+						$query -> the_post();
+						the_title();
+						echo '<br>';
+
+					endwhile; endif;
+
+				?> -->
+
+	
 					</div>
 				</div><!-- End column-8 -->
 

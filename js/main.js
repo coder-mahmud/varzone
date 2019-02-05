@@ -111,12 +111,29 @@ $(document).on('click','.page-numbers',function(e){
         }
     });    
   }
+}) // Page number click
 
 
+  $('#city_name').autoComplete({
+    source: function(city, response) {
+      $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url: '/wp-admin/admin-ajax.php',
+        data:{
+         action:'autofill',
+         city:city,
+        },
+        success: function(data) {
+          response(data);
+        },
+        error: function(){
+          alert('ki code likhso????');
+        }
+      });
+    }
+  });
 
-
-
-})
 
 
 
