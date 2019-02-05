@@ -81,10 +81,11 @@ $(document).on('click','.page-numbers',function(e){
   }
 
   var division_id = $('.division_id').html();
-  var conference_id = $('.conference_id').html();
+  var city_id = $('.city_id').html();
   var state_id = $('.state_id').html();
   var sport_id = $('.sport_id').html();
-  
+  //var city = $('.city').html();
+  console.log(city_id);
 
   if(makeCall){
     $.ajax({
@@ -93,9 +94,10 @@ $(document).on('click','.page-numbers',function(e){
          page: page,
          action:'myfilter_new',
          division_id:division_id,
-         conference_id:conference_id,
+         //conference_id:conference_id,
          state_id:state_id,
          sport_id:sport_id,
+         city_id:city_id,
         },
         type:'POST',
 

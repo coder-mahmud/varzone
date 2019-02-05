@@ -21,7 +21,7 @@ get_header();
 				<div class="column column-4">
 					<form action="<?php echo site_url() ?>/wp-admin/admin-ajax.php" method="POST" id="filter" class="scholl_filter">
 
-			            <div  class="single_filter">
+<!-- 			            <div  class="single_filter">
 			            	<span class="select_name">Conference Center</span>
 			                <?php  
 			                      if( $confs = get_terms( array( 'taxonomy' => 'school-conference' ) ) ) :
@@ -35,7 +35,7 @@ get_header();
 			                    endif;
 
 			                ?>
-			            </div>
+			            </div> -->
 
 			            <div class="single_filter">
 			            	<span class="select_name">State</span>
@@ -89,6 +89,9 @@ get_header();
 				        </div>
 
 				        <div  class="single_filter">
+							<input type="text" name="city_id" placeholder="Write your city" class="city">
+				        </div>
+				        <div  class="single_filter">
 							<button class="btn btn-primary">Search Schools</button>
 				        </div>
 
@@ -119,7 +122,13 @@ get_header();
 						<?php endwhile; endif; ?>
 
 					</div>
+
+					<div class="test_div">
+
+					</div>
 				</div><!-- End column-8 -->
+
+
 
 			</div><!-- End row -->
 

@@ -71,13 +71,13 @@ if(!empty($division_terms)){
     $division_data['terms'] =$division_terms;
 }
 
-$conf_data='';
-if(!empty($conf_terms)){
+// $conf_data='';
+// if(!empty($conf_terms)){
     
-    $conf_data['taxonomy'] = 'school-conference';
-    $conf_data['field'] = 'slug';
-    $conf_data['terms'] =$conf_terms;
-}
+//     $conf_data['taxonomy'] = 'school-conference';
+//     $conf_data['field'] = 'slug';
+//     $conf_data['terms'] =$conf_terms;
+// }
 
 $state_data='';
 if(!empty($state_terms)){
@@ -98,7 +98,7 @@ if(!empty($sport_terms)){
 
 
 $paged = $_POST['page'] ? $_POST['page'] : 1;
-
+$city_id = $_POST['city_id'];
 $args = array(
     'orderby' => 'date',
     'post_type' => 'schools',
@@ -115,18 +115,27 @@ $args = array(
             $division_data
         ),
         
-        array(
-            $conf_data
-        ),
+        // array(
+        //     $conf_data
+        // ),
         array(
             $sport_data
-        )
+        ) 
+    ),
 
-        
-    )
+    'meta_query' => array(
+        array(
+            'key'     => 'city',
+            'value'   => $city_id,
+            'compare' => 'LIKE',
+        ),
+    ),
+
+
+
 );
 
-//print_r( $_POST);
+print_r( $_POST);
 //$data = $_POST;
  //print_r($division_data);
 //echo $_POST['division_id'];
@@ -160,13 +169,7 @@ if( $query->have_posts() ) :
 
         //echo $total_pages;
 
-        echo "<div class='data_div'>";
-        echo "<div class='division_id'>".$_POST['division_id']."</div>";
-        echo "<div class='conference_id'>".$_POST['conference_id']."</div>";
-        echo "<div class='state_id'>".$_POST['state_id']."</div>";
-        echo "<div class='sport_id'>".$_POST['sport_id']."</div>";
-        echo "<div class='total_page'>".$total_pages."</div>";
-        echo "</div>";
+
 
 
 
@@ -175,6 +178,18 @@ if( $query->have_posts() ) :
         // $links = str_replace('<a ', '<a data-sport='.$sport_data , $links);
         // echo $links;
     }
+
+        echo "<div class='data_div'>";
+        echo "<div class='division_id'>".$_POST['division_id']."</div>";
+        //echo "<div class='conference_id'>".$_POST['conference_id']."</div>";
+        echo "<div class='state_id'>".$_POST['state_id']."</div>";
+        echo "<div class='sport_id'>".$_POST['sport_id']."</div>";
+        echo "<div class='total_page'>".$total_pages."</div>";
+        echo "<div class='city_id'>".$_POST['city_id']."</div>";
+        echo "</div>";
+
+
+
     
     // 
     wp_reset_postdata();
@@ -260,13 +275,13 @@ if(!empty($division_terms)){
     $division_data['terms'] =$division_terms;
 }
 
-$conf_data='';
-if(!empty($conf_terms)){
+// $conf_data='';
+// if(!empty($conf_terms)){
     
-    $conf_data['taxonomy'] = 'school-conference';
-    $conf_data['field'] = 'slug';
-    $conf_data['terms'] =$conf_terms;
-}
+//     $conf_data['taxonomy'] = 'school-conference';
+//     $conf_data['field'] = 'slug';
+//     $conf_data['terms'] =$conf_terms;
+// }
 
 $state_data='';
 if(!empty($state_terms)){
@@ -286,6 +301,7 @@ if(!empty($sport_terms)){
 
 
 $paged = $_POST['page'];
+$city_id = $_POST['city_id'];
 
 $args = array(
     'orderby' => 'date',
@@ -303,15 +319,24 @@ $args = array(
             $division_data
         ),
         
-        array(
-            $conf_data
-        ),
+        // array(
+        //     $conf_data
+        // ),
         array(
             $sport_data
-        )
+        )        
+    ),
 
-        
-    )
+    'meta_query' => array(
+        array(
+            'key'     => 'city',
+            'value'   => $city_id,
+            'compare' => 'LIKE',
+        ),
+    ),
+
+
+
 );
 
 
@@ -357,6 +382,7 @@ if( $query->have_posts() ) :
     echo "<div class='conf_id'>".$_POST['conference_id']."</div>";
     echo "<div class='state_id'>".$_POST['state_id']."</div>";
     echo "<div class='sport_id'>".$_POST['sport_id']."</div>";
+    echo "<div class='city_id'>".$city_id."</div>";
     echo "<div class='total_page'>".$total_pages."</div>";
     echo "</div>";
 
