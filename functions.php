@@ -104,7 +104,7 @@ $city_id = $_POST['city_id'];
 $args = array(
     'orderby' => 'date',
     'post_type' => 'schools',
-    'posts_per_page' => 1,
+    'posts_per_page' => 10,
     'paged' => $paged,
 
     'tax_query' => array(
@@ -308,7 +308,7 @@ $city_id = $_POST['city_id'];
 $args = array(
     'orderby' => 'date',
     'post_type' => 'schools',
-    'posts_per_page' => 1,
+    'posts_per_page' => 10,
     'paged' => $paged,
 
     'tax_query' => array(
@@ -407,7 +407,7 @@ add_action('wp_ajax_nopriv_autofill', 'cwp_auto_fill_callback');
 
 function cwp_auto_fill_callback(){
     $city = $_POST['city'];
-    $citis = array();
+    $cities = array();
     $args = array(
         'orderby' => 'date',
         'post_type' => 'schools',
@@ -426,10 +426,11 @@ function cwp_auto_fill_callback(){
     if($query -> have_posts()): while($query -> have_posts()):
         $query -> the_post();
         $city_name = get_field('city');
-       $citis[] = $city_name;
+       $cities[] = $city_name;
 
     endwhile; endif;
-    echo json_encode($citis);
+    $cities = array_unique($cities);
+    echo json_encode($cities);
  
     die();
 
