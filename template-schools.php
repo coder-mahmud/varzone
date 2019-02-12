@@ -21,64 +21,87 @@ get_header();
 				<div class="column column-4">
 					<form action="<?php echo site_url() ?>/wp-admin/admin-ajax.php" method="POST" id="filter" class="scholl_filter">
 
-				        <div  class="single_filter">
-				        	<span class="select_name">City</span>
-							<input id="city_name" type="text" name="city_id" placeholder="Write your city" class="city">
-							<span class="helper">Strat writing first 3 letters of city and will be shown available city names automatically.</span>
-				        </div>
-
-
-
 			            <div class="single_filter">
 			            	<span class="select_name">State</span>
-			                <?php  
-			                      if( $states = get_terms( array( 'taxonomy' => 'school-state' ) ) ) :
-			                            echo '<select name="state_id" class="form_selector">';
-			                            echo '<option value="select">No Preference</option>';
-			                        foreach( $states as $state ) :
-			                             echo  '<option value="'. $state->term_id . '">'.$state->name.'</option>';
 
-			                        endforeach;
-			                            echo '</select>';
-			                    endif;
+							<select name="state_id" class="form_selector">
+								<option value="">No Preference</option>
+							<?php
 
-			                ?>
-			            </div>
+							   $args = array('post_type' => 'schools', 'posts_per_page' => -1,);
+							   $category_posts = new WP_Query($args);
+							   if($category_posts->have_posts()) : while($category_posts->have_posts()) : $category_posts->the_post();
+							?>
+							<?php
+								$state = get_field('state');
+							?>
+								<option value="<?php echo $state; ?>"><?php echo $state; ?></option>
+								<?php //echo $state; ?>
 
+
+							<?php endwhile; endif; ?>
+							<?php wp_reset_query();  ?>
+
+							</select>
+
+			            </div> 
 
 			            <div class="single_filter">
 			            	<span class="select_name">Sport</span>
-			                <?php  
-			                      if( $sports = get_terms( array( 'taxonomy' => 'school-sports' ) ) ) :
-			                            echo '<select name="sport_id" class="form_selector">';
-			                            echo '<option value="select">No Preference</option>';
-			                        foreach( $sports as $sport ) :
-			                             echo  '<option value="'. $sport->term_id . '">'.$sport->name.'</option>';
-			                        endforeach;
-			                            echo '</select>';
-			                    endif;
 
-			                ?>
+							<select name="sports_id" class="form_selector">
+								<option value="">No Preference</option>
+							<?php
+
+							   $args = array('post_type' => 'schools', 'posts_per_page' => -1,);
+							   $category_posts = new WP_Query($args);
+							   if($category_posts->have_posts()) : while($category_posts->have_posts()) : $category_posts->the_post();
+							?>
+							<?php
+								$sports = get_field('sports');
+							?>
+								<option value="<?php echo $sports; ?>"><?php echo $sports; ?></option>
+
+							<?php endwhile; endif; ?>
+							<?php wp_reset_query();  ?>
+
+							</select>
+
 			            </div>
-
-
 
 				        <div class="single_filter">
 				        	<span class="select_name">Division</span>
-				                <?php  
-				                      if( $divisions = get_terms( array( 'taxonomy' => 'school-division' ) ) ) :
-				                            echo '<select name="division_id" id="" class="form_selector">';
-				                            echo '<option value="select">No Preference</option>';
-				                        foreach( $divisions as $division ) :
+				                <?php
+				                	$args = array(
+				                		'post_type' => 'schools',
+				                		'posts_per_page' => -1,
 
-				                               echo  '<option value="'. $division->term_id . '">'.$division->name.'</option>';
+				                	);
 
-				                        endforeach;
-				                            //echo '</ul>';
-				                            echo '</select>';
-				                    endif;
+				                	$query = new WP_Query($args);
 				                ?>
+
+				                <select name="division_id" id="" class="form_selector">
+				                	<option value="">No Preference</option>
+				                <?php
+				                	if($query -> have_posts()):
+				                		while($query -> have_posts()):
+				                			$query -> the_post();
+				                			$division = get_field('division');
+				                ?>
+				                	<option value="<?php echo $division; ?>"><?php echo $division; ?></option>
+
+				                <?php endwhile; endif; ?>
+				                </select>
 				        </div>
+
+				        <div  class="single_filter">
+				        	<span class="select_name">Keyword</span>
+							<input id="city_name" type="text" name="search_data" placeholder="Write your keyword" class="city">
+							<span class="helper">Strat writing first 3 letters of your keyword and will be shown available city names automatically.</span>
+				        </div>
+
+
 
 
 				        <div  class="single_filter">
@@ -114,6 +137,11 @@ get_header();
 					</div>
 
 
+<div class="test">
+
+
+
+</div>
 
 				</div><!-- End column-8 -->
 			</div><!-- End row -->

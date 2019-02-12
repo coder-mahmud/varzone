@@ -119,7 +119,7 @@ $(document).on('click','.page-numbers',function(e){
       $.ajax({
         type: 'POST',
         dataType: 'json',
-        url: '/wp-admin/admin-ajax.php',
+        url: frontend_ajax_object.url,
         data:{
          action:'autofill',
          city:city,

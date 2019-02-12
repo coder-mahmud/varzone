@@ -14,11 +14,16 @@ function bimber_child_setup() {
 	wp_enqueue_style('auto_complete_style', get_stylesheet_directory_uri(). '/css/jquery.auto-complete.css');
     wp_enqueue_script('auto_complete_script', get_stylesheet_directory_uri().'/js/jquery.auto-complete.js', array('jquery'), '', true );
 	wp_enqueue_script('child_main_script', get_stylesheet_directory_uri().'/js/main.js', array('jquery'), '', true );
+
+    wp_localize_script( 'child_main_script', 'frontend_ajax_object',
+        array( 
+            'url' => admin_url( 'admin-ajax.php' ),
+        )
+    );
+
 }
 
 add_action( 'after_setup_theme', 'bimber_child_setup' );
-
-
 
 
 function cwp_filter_function(){   
@@ -97,47 +102,108 @@ if(!empty($sport_terms)){
     $sport_data['terms'] =$sport_terms;
 }
 
+$state = '';
+$division = '';
+$sports = '';
+$search_data = '';
+
+if($_POST['state_id']){
+    $state = $_POST['state_id'];
+}
+
+if($_POST['division_id']){
+    $division = $_POST['division_id'];
+}
+
+if($_POST['sports_id']){
+    $sports = $_POST['sports_id'];
+}
+
+if($_POST['search_data']){
+    $search_data = $_POST['search_data'];
+}
+
+
+if( $division != '' || $search_data !='' ){
+    $division_data = array(
+        'key' => 'division',
+        //'value' => $division,
+        'value' => array($division, $search_data),
+        'compare' => 'IN'
+        //'compare' => 'LIKE'
+
+    );
+}
+
+
+if( $state != '' || $search_data !='' ){
+    $state_data = array(
+        'key' => 'state',
+        //'value' => $division,
+        'value' => array($state, $search_data),
+        'compare' => 'IN'
+        //'compare' => 'LIKE'
+
+    );
+}
+
+if( $sports != '' || $search_data !='' ){
+    $sports_data = array(
+        'key' => 'sports',
+        //'value' => $division,
+        'value' => array($sports, $search_data),
+        'compare' => 'IN'
+        //'compare' => 'LIKE'
+
+    );
+}
+
 
 
 $paged = $_POST['page'] ? $_POST['page'] : 1;
-$city_id = $_POST['city_id'];
+//$city_id = $_POST['city_id'];
+
 $args = array(
     'orderby' => 'date',
     'post_type' => 'schools',
     'posts_per_page' => 10,
     'paged' => $paged,
 
-    'tax_query' => array(
+    'meta_query' => array( 
         'relation' => 'AND',
-
         array(
             $state_data
-        ),        
+        ),
         array(
+
             $division_data
         ),
-        
-        // array(
-        //     $conf_data
-        // ),
         array(
-            $sport_data
-        ) 
-    ),
-
-    'meta_query' => array(
-        array(
-            'key'     => 'city',
-            'value'   => $city_id,
-            'compare' => 'LIKE',
+            $sports_data
         ),
-    ),
+
+        // array(
+        //     'key' => 'state',
+        //     'value' => array($state,$search_data),
+        //     'compare' => 'LIKE'
+        // ),
+        // array(
+        //     'key' => 'division',
+        //     'value' => array($division,$search_data),
+        //     'compare' => 'LIKE'
+        // ),
+        // array(
+        //     'key' => 'sports',
+        //     'value' => array($sports,$search_data),
+        //     'compare' => 'LIKE'
+        // ),
+    )
 
 
 
 );
 
-//print_r( $_POST);
+print_r( $_POST);
 //$data = $_POST;
  //print_r($division_data);
 //echo $_POST['division_id'];
@@ -425,11 +491,11 @@ function cwp_auto_fill_callback(){
 
     if($query -> have_posts()): while($query -> have_posts()):
         $query -> the_post();
-        $city_name = get_field('city');
-       $cities[] = $city_name;
+        //$city_name = get_field('city');
+        $cities[] = get_the_title();
 
     endwhile; endif;
-    $cities = array_unique($cities);
+    $cities = array_unique('Dhaka', 'II', 'III');
     echo json_encode($cities);
  
     die();
@@ -439,3 +505,4 @@ function cwp_auto_fill_callback(){
 
 
 }
+
