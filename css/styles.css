@@ -7,7 +7,7 @@
 
 
 
-.g1-hb-row-normal .header_category_links{display: none;}
+.g1-hb-row-normal .header_category_links, .g1-hb-row-mobile .header_category_links{display: none;}
 .g1-hb-row-2 .header_category_links{display: block;}
 .header_category_links .cat_list{display: block;}
 .header_category_links .cat_list li{float: left; display: inline-block; margin:0 5px;}
@@ -17,6 +17,8 @@
 .header_category_links .cat_list li span.icon img{max-width: 40px;}
 .header_category_links .cat_list li span.category_name{font-size: 12px;}
 
+.single_cat_name{position: relative; display: inline-block; width:20%; float: left;}
+.single_cat_name p{color:#000; font-weight: bold;}
 
 
 /*============= School Filter ==============*/
@@ -139,6 +141,38 @@ color:#fff;}
 }
 
 
+.slicknav_menu {
+  display:none;
+}
+
+@media screen and (max-width: 40em) {
+  /* #menu is the original menu */
+  .js #menu {
+    display:none;
+  }
+  
+  .js .slicknav_menu {
+    display:none;
+  }
+  .js .slicknav_menu:first-child {
+    display: inline-block;
+    float: right;
+    background: no-repeat;
+    position: absolute;
+    top: 41px;
+    right: 5px;
+    z-index: 99;
+  }
+  .slicknav_nav{
+    background: rgba(0,0,0,.8);
+  }
+
+  .header_category_links .cat_list{display: none;}
+
+  span.category_name{position: relative; top:-25px; margin-left: 15px;}
+}
+
+
 /*================ Responsive Rules ===================*/
 
 @media only screen and (min-width: 768px) {
@@ -157,4 +191,12 @@ color:#fff;}
 
 
 
+}
+
+@media only screen and (max-width: 500px) {
+  .single_cat_name{width: 50%; text-align: center;}
+}
+
+@media only screen and (max-width: 360px) {
+  .slicknav_icon{display: none;}
 }

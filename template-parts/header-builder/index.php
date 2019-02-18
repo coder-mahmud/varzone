@@ -85,46 +85,91 @@ foreach ( $headers as $header ) :
 
 
 <ul class="cat_list">
-	<?php
-		$categories = get_categories( array(
-		    'orderby' => 'name',
-		    'order'   => 'ASC',
-		    'exclude'   => 1
 
-		) );
-		//print_r($categories);
+	<li class="single_category">
+		<a href="<?php bloginfo('home'); ?>/category/baseball/">
+		<span class="icon"><img src="<?php echo get_stylesheet_directory_uri(); ?>/img/3. baseball.png" alt=""></span>
+		<span class="category_name">Baseball</span>
+		</a>
+	</li>
 
-		foreach($categories as $category){
-			$icon = get_field('icon', 'category_'.$category->term_id);
-		?>
+	<li class="single_category">
+		<a href="<?php bloginfo('home'); ?>/category/basketball/">
+		<span class="icon"><img src="<?php echo get_stylesheet_directory_uri(); ?>/img/basketball.png" alt=""></span>
+		<span class="category_name">Basketball</span>
+		</a>
+	</li>
+	<li class="single_category">
+		<a href="<?php bloginfo('home'); ?>/category/football/">
+		<span class="icon"><img src="<?php echo get_stylesheet_directory_uri(); ?>/img/11. football.png" alt=""></span>
+		<span class="category_name">Football</span>
+		</a>
+	</li>
 
-			<li class="single_category">
-				<a href="<?php echo home_url();?>/category/<?php echo $category->slug; ?>">
-				<span class="icon"><img src="<?php echo $icon; ?>" alt=""></span>
-				<span class="category_name"><?php echo $category-> name; ?></span>
-				</a>
-			</li>	
-		<?php
+	<li class="single_category">
+		<a href="<?php bloginfo('home'); ?>/category/golf/">
+		<span class="icon"><img src="<?php echo get_stylesheet_directory_uri(); ?>/img/7. golf.png" alt=""></span>
+		<span class="category_name">Golf</span>
+		</a>
+	</li>
 
-		}
+	<li class="single_category">
+		<a href="<?php bloginfo('home'); ?>/category/hockey/">
+		<span class="icon"><img src="<?php echo get_stylesheet_directory_uri(); ?>/img/12. hockey.png" alt=""></span>
+		<span class="category_name">Hockey</span>
+		</a>
+	</li>
 
-	?>		
-		<!--
-		<li class="single_category">
-			<a href="">
-			<span class="icon"><img src="<?php echo get_stylesheet_directory_uri(); ?>/img/basketball.png" alt=""></span>
-			<span class="category_name">Demo Category</span>
-			</a>
-		</li>		
-		<li class="single_category">
-			<a href="">
-			<span class="icon"><img src="<?php echo get_stylesheet_directory_uri(); ?>/img/basketball.png" alt=""></span>
-			<span class="category_name">Demo Category</span>
-			</a>
-		</li>
-		-->
-		
+	<li class="single_category">
+		<a href="<?php bloginfo('home'); ?>/category/lacrosse/">
+		<span class="icon"><img src="<?php echo get_stylesheet_directory_uri(); ?>/img/10. lacrosse.png" alt=""></span>
+		<span class="category_name">Lacrosse</span>
+		</a>
+	</li>
+	<li class="single_category">
+		<a href="<?php bloginfo('home'); ?>/category/soccer/">
+		<span class="icon"><img src="<?php echo get_stylesheet_directory_uri(); ?>/img/5. soccer.png" alt=""></span>
+		<span class="category_name">Soccer</span>
+		</a>
+	</li>
 
+	<li class="single_category">
+		<a href="<?php bloginfo('home'); ?>/category/swimming/">
+		<span class="icon"><img src="<?php echo get_stylesheet_directory_uri(); ?>/img/9. swimming.png" alt=""></span>
+		<span class="category_name">Swimming</span>
+		</a>
+	</li>
+	<li class="single_category">
+		<a href="<?php bloginfo('home'); ?>/category/tennis/">
+		<span class="icon"><img src="<?php echo get_stylesheet_directory_uri(); ?>/img/6. tennis.png" alt=""></span>
+		<span class="category_name">Tennis</span>
+		</a>
+	</li>
+	<li class="single_category">
+		<a href="<?php bloginfo('home'); ?>/category/track-field/">
+		<span class="icon"><img src="<?php echo get_stylesheet_directory_uri(); ?>/img/2. track & field.png" alt=""></span>
+		<span class="category_name">Track & Field</span>
+		</a>
+	</li>
+
+	<li class="single_category">
+		<a href="<?php bloginfo('home'); ?>/category/volleyball/">
+		<span class="icon"><img src="<?php echo get_stylesheet_directory_uri(); ?>/img/8. volleyball.png" alt=""></span>
+		<span class="category_name">Volleyball</span>
+		</a>
+	</li>
+	<li class="single_category">
+		<a href="<?php bloginfo('home'); ?>/category/wrestling/">
+		<span class="icon"><img src="<?php echo get_stylesheet_directory_uri(); ?>/img/13. wrestling.png" alt=""></span>
+		<span class="category_name">Wrestling</span>
+		</a>
+	</li>
+	<li class="single_category">
+		<a href="<?php bloginfo('home'); ?>/categories/">
+		<span class="icon"><img src="<?php echo get_stylesheet_directory_uri(); ?>/img/14. more.png" alt=""></span>
+		<span class="category_name">More</span>
+		</a>
+	</li>
 
 </ul>
 

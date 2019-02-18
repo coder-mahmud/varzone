@@ -98,7 +98,7 @@ get_header();
 				        <div  class="single_filter">
 				        	<span class="select_name">Keyword</span>
 							<input id="city_name" type="text" name="search_data" placeholder="Write your keyword" class="city">
-							<span class="helper">Strat writing first 3 letters of your keyword and will be shown available city names automatically.</span>
+							<span class="helper">Start writing first 3 letters of your keyword and will be shown available city names automatically.</span>
 				        </div>
 
 

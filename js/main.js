@@ -89,7 +89,7 @@ $(document).on('click','.page-numbers',function(e){
 
   if(makeCall){
     $.ajax({
-        url:'http://varzone.me/wp-admin/admin-ajax.php',
+        url:frontend_ajax_object.url,
         data:{
          page: page,
          action:'myfilter_new',
@@ -115,17 +115,18 @@ $(document).on('click','.page-numbers',function(e){
 
 
   $('#city_name').autoComplete({
-    source: function(city, response) {
+    source: function(search_data, response) {
       $.ajax({
         type: 'POST',
         dataType: 'json',
         url: frontend_ajax_object.url,
         data:{
          action:'autofill',
-         city:city,
+         search_data:search_data,
         },
         success: function(data) {
           response(data);
+          console.log(data);
         },
         error: function(){
           alert('ki code likhso????');
@@ -136,7 +137,12 @@ $(document).on('click','.page-numbers',function(e){
 
 
 
+  $(function(){
+    $('.cat_list').slicknav({
+      label: 'Sports'
+    });
+  });
 
-
+  
   });//document ready
 })( jQuery );
